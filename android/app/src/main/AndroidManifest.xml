@@ -11,6 +11,7 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="flutter_voice"
         android:icon="@mipmap/ic_launcher">
+        <activity android:name="io.github.edufolly.fluttermobilevision.ocr.OcrCaptureActivity" />
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

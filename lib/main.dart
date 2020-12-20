@@ -1,5 +1,9 @@
+import 'dart:math';
+
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_voice/scanner.dart';
+import 'package:flutter_voice/text.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
@@ -80,38 +84,63 @@ class _SpeechScreenState extends State<SpeechScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Confidence: ${(_confidence * 100.0).toStringAsFixed(1)}%'),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: AvatarGlow(
-        animate: _isListening,
-        glowColor: Theme.of(context).primaryColor,
-        endRadius: 75.0,
-        duration: const Duration(milliseconds: 2000),
-        repeatPauseDuration: const Duration(milliseconds: 100),
-        repeat: true,
-        child: FloatingActionButton(
-          onPressed: _listen,
-          child: Icon(_isListening ? Icons.mic : Icons.mic_none),
+        appBar: AppBar(
+          title: Text(
+            'Confidence: ${(_confidence * 100.0).toStringAsFixed(1)}%',
+          ),
+          actions: [
+            RaisedButton(
+              textColor: Colors.white,
+              color: Colors.redAccent,
+              child: Text('Picture to text'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Scanner()),
+                );
+              },
+            )
+          ],
         ),
-      ),
-      body: SingleChildScrollView(
-        reverse: true,
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 150.0),
-          child: TextHighlight(
-            text: _text,
-            words: _highlights,
-            textStyle: const TextStyle(
-              fontSize: 32.0,
-              color: Colors.black,
-              fontWeight: FontWeight.w400,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: AvatarGlow(
+          animate: _isListening,
+          glowColor: Theme.of(context).primaryColor,
+          endRadius: 75.0,
+          duration: const Duration(milliseconds: 2000),
+          repeatPauseDuration: const Duration(milliseconds: 100),
+          repeat: true,
+          child: FloatingActionButton(
+            onPressed: _listen,
+            child: Icon(_isListening ? Icons.mic : Icons.mic_none),
+          ),
+        ),
+        body: SingleChildScrollView(
+          reverse: true,
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 150.0),
+            child: TextHighlight(
+              text: _text,
+              words: _highlights,
+              textStyle: const TextStyle(
+                fontSize: 32.0,
+                color: Colors.black,
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ),
         ),
-      ),
-    );
+        bottomNavigationBar: RaisedButton(
+          textColor: Colors.white,
+          color: Colors.redAccent,
+          child: Text('Swithc to Speech'),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => TextToSpeech()),
+            );
+          },
+        ));
   }
 
   void _listen() async {
